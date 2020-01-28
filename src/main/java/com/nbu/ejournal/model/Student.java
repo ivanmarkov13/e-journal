@@ -1,8 +1,6 @@
 package com.nbu.ejournal.model;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.*;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -15,6 +13,9 @@ import java.util.List;
 @Getter
 @Setter
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+@JsonIdentityInfo(
+        generator = ObjectIdGenerators.PropertyGenerator.class,
+        property = "email")
 public class Student {
 
     @Id
@@ -22,11 +23,9 @@ public class Student {
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "school_id", nullable = false)
-    @JsonManagedReference
     private School school;
 
     @OneToMany(mappedBy = "student", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JsonBackReference
     private List<Grade> grades;
 
     public String getEmail() {
@@ -49,7 +48,6 @@ public class Student {
             inverseJoinColumns = {
                     @JoinColumn(name = "course_id", referencedColumnName = "id",
                             nullable = false, updatable = false)})
-    @JsonManagedReference
     private List<Course> courses = new ArrayList<>();
 
     public void setGrades(List<Grade> grades) {

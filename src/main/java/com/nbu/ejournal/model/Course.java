@@ -1,8 +1,6 @@
 package com.nbu.ejournal.model;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.*;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -16,6 +14,9 @@ import java.util.List;
 @Getter
 @Setter
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+@JsonIdentityInfo(
+        generator = ObjectIdGenerators.PropertyGenerator.class,
+        property = "id")
 public class Course {
 
     @Id
@@ -25,7 +26,6 @@ public class Course {
     private String name;
 
     @ManyToMany(mappedBy = "courses", fetch = FetchType.LAZY)
-    @JsonBackReference
     private List<Student> students = new ArrayList<>();
 
     @Getter

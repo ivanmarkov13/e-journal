@@ -12,13 +12,15 @@ import java.io.Serializable;
 @Getter
 @Setter
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+@JsonIdentityInfo(
+        generator = ObjectIdGenerators.PropertyGenerator.class,
+        property = "email")
 public class Principal implements Serializable {
 
     @Id
     private String email;
 
     @OneToOne(mappedBy = "principal", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JsonBackReference
     private School school;
 
 }
